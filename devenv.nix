@@ -5,7 +5,17 @@
   env.GREET = "devenv";
 
   # https://devenv.sh/packages/
-  packages = [ pkgs.git ];
+  packages = with pkgs; [
+    git
+    openssl
+    libyaml
+    postgresql
+    git
+    curl
+    redis
+    nixd
+    nixfmt-rfc-style
+  ];
 
   # https://devenv.sh/languages/
   # languages.rust.enable = true;

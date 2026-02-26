@@ -2,22 +2,46 @@
 
 module I18n
   module MessageFormat
+    # Raised when a placeholder in the pattern has no corresponding argument.
     class MissingArgumentError < Error
+      # The name of the missing argument as it appeared in the pattern.
+      #
+      # @return [String]
       attr_reader :argument_name
 
+      # @param argument_name [String] the name of the missing argument
       def initialize(argument_name)
         @argument_name = argument_name
         super("Missing argument: #{argument_name}")
       end
     end
 
+    # Walks an AST produced by {Parser} and renders a formatted string.
+    #
+    # Each node type is dispatched to a dedicated format method. Number, date,
+    # and time formatting delegate to +I18n.localize+. Plural and ordinal
+    # categorisation uses rules registered under +i18n.plural.rule+ /
+    # +i18n.ordinal.rule+ in the active I18n backend, falling back to simple
+    # one/other logic when no rule is present.
     class Formatter
+      # Creates a new formatter.
+      #
+      # @param nodes [Array] the AST returned by {Parser#parse}
+      # @param arguments [Hash] argument values keyed by Symbol
+      # @param locale [Symbol, String] locale used for pluralisation and
+      #   number/date/time formatting
       def initialize(nodes, arguments, locale)
         @nodes = nodes
         @arguments = arguments
         @locale = locale
       end
 
+      # Renders the AST to a String.
+      #
+      # @return [String] the fully formatted message
+      # @raise [MissingArgumentError] if a required argument is absent from
+      #   the arguments hash
+      # @raise [Error] if a plural or select branch cannot be resolved
       def format
         format_nodes(@nodes)
       end

@@ -2,21 +2,54 @@
 
 module I18n
   module MessageFormat
+    # Raised when {Parser} encounters a syntax error in a message format pattern.
     class ParseError < Error
+      # The zero-based character position in the pattern where the error occurred.
+      #
+      # @return [Integer, nil]
       attr_reader :position
 
+      # @param message [String] human-readable description of the parse error
+      # @param position [Integer, nil] zero-based position in the pattern string
       def initialize(message, position = nil)
         @position = position
         super(position ? "#{message} at position #{position}" : message)
       end
     end
 
+    # Parses an ICU MessageFormat pattern string into an AST.
+    #
+    # The parser understands the following ICU constructs:
+    #
+    # * Simple argument: +{name}+
+    # * Number format: +{name, number}+ / +{name, number, style}+
+    # * Date format: +{name, date}+ / +{name, date, style}+
+    # * Time format: +{name, time}+ / +{name, time, style}+
+    # * Plural: +{name, plural, one {…} other {…}}+
+    # * Select: +{name, select, foo {…} other {…}}+
+    # * Select ordinal: +{name, selectordinal, one {…} other {…}}+
+    # * Quoted literals using single quotes (+'+)
+    #
+    # The produced AST is a flat array of {Nodes} objects.
+    #
+    # @example
+    #   nodes = I18n::MessageFormat::Parser.new("Hello, {name}!").parse
+    #   # => [#<TextNode value="Hello, ">, #<ArgumentNode name="name">, #<TextNode value="!">]
     class Parser
+      # Creates a new parser for the given pattern string.
+      #
+      # @param pattern [String] the ICU MessageFormat pattern to parse
       def initialize(pattern)
         @pattern = pattern
         @pos = 0
       end
 
+      # Parses the pattern and returns its AST representation.
+      #
+      # @return [Array<Nodes::TextNode, Nodes::ArgumentNode, Nodes::NumberFormatNode,
+      #   Nodes::DateFormatNode, Nodes::TimeFormatNode, Nodes::PluralNode,
+      #   Nodes::SelectNode, Nodes::SelectOrdinalNode>]
+      # @raise [ParseError] if the pattern contains a syntax error
       def parse
         nodes = parse_message
         nodes
