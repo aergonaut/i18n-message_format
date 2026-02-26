@@ -283,7 +283,7 @@ module I18n
         merged = []
         nodes.each do |node|
           if node.is_a?(Nodes::TextNode) && merged.last.is_a?(Nodes::TextNode)
-            merged.last.value << node.value
+            merged.last.value = +(merged.last.value) + node.value
           else
             merged << node
           end

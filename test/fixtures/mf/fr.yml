@@ -1,0 +1,4 @@
+# test/fixtures/mf/fr.yml
+fr:
+  greeting: "Bonjour {name} !"
+  items: "{count, plural, one {# article} other {# articles}}"
