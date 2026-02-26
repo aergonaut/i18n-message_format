@@ -12,6 +12,7 @@ end
 
 require_relative "message_format/parser"
 require_relative "message_format/formatter"
+require_relative "message_format/backend"
 
 module I18n
   module MessageFormat

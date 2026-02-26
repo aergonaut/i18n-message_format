@@ -1,0 +1,4 @@
+en:
+  greeting: "Hello {name}!"
+  items: "{count, plural, one {# item} other {# items}}"
+  welcome: "{gender, select, male {Welcome Mr. {name}} female {Welcome Ms. {name}} other {Welcome {name}}}"
