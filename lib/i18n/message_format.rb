@@ -11,3 +11,4 @@ module I18n
 end
 
 require_relative "message_format/parser"
+require_relative "message_format/formatter"
