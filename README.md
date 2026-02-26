@@ -57,6 +57,33 @@ I18n.t("greeting", name: "Alice")
 - Nested messages
 - Escaped braces: `'{ '} ''`
 
+### Number, Date, and Time Formatting
+
+Number, date, and time format arguments delegate to [`I18n.localize`](https://www.rubydoc.info/gems/i18n/I18n/Backend/Base#localize-instance_method), so their output depends on the format definitions in your I18n backend.
+
+- **Number** — `{count, number}` calls `I18n.localize` with the value and locale. The optional style (e.g. `{count, number, integer}`) is passed as the `:format` option.
+- **Date** — `{d, date, short}` calls `I18n.localize` with `:format => :short`. The style maps directly to an I18n date format key. Common styles are `short`, `medium`, `long`, and `full`, but any key defined under `date.formats` in your locale file works.
+- **Time** — `{t, time, short}` works the same way, looking up keys under `time.formats`.
+
+For example, with these locale definitions:
+
+```yaml
+en:
+  date:
+    formats:
+      short: "%b %-d"
+      long: "%B %-d, %Y"
+  time:
+    formats:
+      short: "%H:%M"
+```
+
+The pattern `"Updated on {d, date, short}"` with `d: Date.new(2026, 1, 15)` produces `"Updated on Jan 15"`.
+
+### Plural Rules
+
+Plural rules are also delegated to the I18n backend. Any gem which supplies plural rules to I18n will work with `I18n::MessageFormat`, e.g. [`rails-i18n`](https://github.com/svenfuchs/rails-i18n).
+
 ### Ordinal Rules
 
 Install built-in ordinal rules for selectordinal support:
