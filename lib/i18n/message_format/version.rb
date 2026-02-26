@@ -3,6 +3,6 @@
 module I18n
   module MessageFormat
     # The current version of the i18n-message_format gem.
-    VERSION = "0.1.0"
+    VERSION = "0.1.1"
   end
 end
