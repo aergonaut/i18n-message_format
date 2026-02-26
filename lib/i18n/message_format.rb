@@ -9,3 +9,5 @@ module I18n
     # Your code goes here...
   end
 end
+
+require_relative "message_format/parser"
