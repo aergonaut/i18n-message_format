@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative "message_format/cache"
 require_relative "message_format/nodes"
 require_relative "message_format/version"
 
