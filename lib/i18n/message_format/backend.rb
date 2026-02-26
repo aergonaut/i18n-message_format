@@ -110,7 +110,7 @@ module I18n
       #
       # @return [Array<Symbol>]
       def available_locales
-        @translations.keys
+        translations.keys
       end
 
       # Returns +true+ if any translations have been loaded into the backend.
@@ -120,7 +120,33 @@ module I18n
         !@translations.empty?
       end
 
+      # Eagerly loads all translations and calls +super+ to trigger any
+      # eager-loading behaviour defined by +I18n::Backend::Base+.
+      #
+      # @return [void]
+      def eager_load!
+        init_translations unless initialized?
+        super
+      end
+
+      # Returns the full in-memory translation store, loading translations first
+      # if they have not yet been initialized.
+      #
+      # @return [Hash{Symbol => Hash}] a hash keyed by locale symbol, each value
+      #   being a flat hash of dot-separated translation keys to their values
+      def translations
+        init_translations unless initialized?
+        @translations
+      end
+
       protected
+
+      # Initializes the translation store by delegating to {#load_translations}.
+      #
+      # @return [void]
+      def init_translations
+        load_translations
+      end
 
       # Looks up a translation value by locale and key.
       #
