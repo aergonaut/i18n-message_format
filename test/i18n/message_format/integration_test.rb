@@ -58,25 +58,19 @@ module I18n
       end
 
       def test_complex_nested_message
-        pattern = "{gender, select, male {{count, plural, one {He has # item} other {He has # items}}} female {{count, plural, one {She has # item} other {She has # items}}} other {{count, plural, one {They have # item} other {They have # items}}}}"
-        result = I18n::MessageFormat.format(pattern, gender: "female", count: 3)
-        assert_equal "She has 3 items", result
+        assert_equal "She has 3 items", ::I18n.t("gender_items", gender: "female", count: 3)
       end
 
       def test_date_in_message
-        pattern = "Updated on {d, date, short}"
-        result = I18n::MessageFormat.format(pattern, d: ::Date.new(2026, 3, 15))
-        assert_equal "Updated on Mar 15", result
+        assert_equal "Updated on Mar 15", ::I18n.t("updated_on", d: ::Date.new(2026, 3, 15))
       end
 
       def test_escaped_braces
-        result = I18n::MessageFormat.format("Use '{' and '}' for braces")
-        assert_equal "Use { and } for braces", result
+        assert_equal "Use { and } for braces", ::I18n.t("escaped_braces")
       end
 
       def test_escaped_single_quote
-        result = I18n::MessageFormat.format("it''s {name}''s", name: "Alice")
-        assert_equal "it's Alice's", result
+        assert_equal "it's Alice's", ::I18n.t("escaped_quote", name: "Alice")
       end
     end
   end

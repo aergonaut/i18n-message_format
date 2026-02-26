@@ -2,3 +2,7 @@ en:
   greeting: "Hello {name}!"
   items: "{count, plural, one {# item} other {# items}}"
   welcome: "{gender, select, male {Welcome Mr. {name}} female {Welcome Ms. {name}} other {Welcome {name}}}"
+  gender_items: "{gender, select, male {{count, plural, one {He has # item} other {He has # items}}} female {{count, plural, one {She has # item} other {She has # items}}} other {{count, plural, one {They have # item} other {They have # items}}}}"
+  updated_on: "Updated on {d, date, short}"
+  escaped_braces: "Use '{' and '}' for braces"
+  escaped_quote: "it''s {name}''s"
